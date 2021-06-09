@@ -7,6 +7,7 @@
   
   Algorithm| Supported
   -----------|----------
+  BST-Tree|✅
   AVL-Tree | ✅
    B-Tree  |  ❌ 
    Suffix Tree|❌
