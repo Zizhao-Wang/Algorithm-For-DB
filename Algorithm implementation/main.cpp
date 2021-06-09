@@ -1,6 +1,9 @@
-#include <iostream>
+#include<iostream>
+#include<algorithm>
+#include "AVLTree.h"
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
+int main()
+{
+    AVLTree avl=AVLTree();
     return 0;
 }
