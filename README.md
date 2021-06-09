@@ -3,9 +3,11 @@
   
 # Algorithm supported
   I am coding the following algorithms, they will be realized by C++!
+  The following algorithms will be realized within a short time period!
   
-  Algorithm| Supported
+  Algorithm| Support status
   -----------|----------
+  BST-Tree|✅
   AVL-Tree | ✅
    B-Tree  |  ❌ 
    Suffix Tree|❌
@@ -16,4 +18,4 @@
    M-Tree|❌
    Bloom Fliter |❌
    
-
+   Note: Only represents the current state!
