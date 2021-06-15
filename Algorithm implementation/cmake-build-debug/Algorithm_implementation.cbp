@@ -83,6 +83,12 @@
 		<Unit filename="D:/Research of Database/Basic algorithm/Basic-algorithm-for-DB/Algorithm implementation/AVLTree.h">
 			<Option target="Algorithm_implementation"/>
 		</Unit>
+		<Unit filename="D:/Research of Database/Basic algorithm/Basic-algorithm-for-DB/Algorithm implementation/BTree.c">
+			<Option target="Algorithm_implementation"/>
+		</Unit>
+		<Unit filename="D:/Research of Database/Basic algorithm/Basic-algorithm-for-DB/Algorithm implementation/BTree.h">
+			<Option target="Algorithm_implementation"/>
+		</Unit>
 		<Unit filename="D:/Research of Database/Basic algorithm/Basic-algorithm-for-DB/Algorithm implementation/main.cpp">
 			<Option target="Algorithm_implementation"/>
 		</Unit>
