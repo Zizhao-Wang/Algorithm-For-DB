@@ -9,7 +9,7 @@
   -----------|----------
   BST-Tree|✅
   AVL-Tree | ✅
-   B-Tree  |  ❌ 
+   B-Tree  |  ✅ 
    Suffix Tree|❌
    LSM-Tree | ❌
    B+ Tree |❌
