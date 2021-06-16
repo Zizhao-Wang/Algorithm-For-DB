@@ -11,8 +11,7 @@
 #define BTREE_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C"{
 #endif
 #define BTree_Degree    2
 #define BTree_Order     (BTree_Degree * 2) // The order is the maximum number of words that the internal node can take, which is twice the degree.
@@ -44,8 +43,9 @@ extern "C"
     void BTreePrint(const BTree tree,int layer);
 
     //Find the key in the B-Tree.If success,return address and position.
-    BTNode*  BTreeSearch(const BTree tree, int key,int * pos);
+    BTNode* BTreeSearch(const BTree tree, int key,int * pos);
 #ifdef __cplusplus
+
 };
 #endif
 

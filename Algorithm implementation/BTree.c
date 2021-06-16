@@ -285,10 +285,142 @@ void BTreeMergeChild(BTree* tree,BTNode* node,int index)
 
 
 
-
+//The number of keywords of non-root internal nodes must be no less than BTree_Degree-1
 void BTreeRecursiveRemove(BTree* tree, KeyType key)
 {
+    int i,j,index;
+    BTNode *root=*tree;
+    BTNode *node=root;
+    if(!root)
+    {
+        printf("Failed to remove %c, it is not in the tree!\n", key);
+        return;
+    }
 
+    index=0;
+    while (index<node->keynum&&key>node->key[index])
+    {
+        ++index;
+    }
+
+    if(index<node->keynum && node->key[index]==key)
+    {
+        BTNode *LeftChild, *RightChild;
+        KeyType LeftKey, RightKey;
+
+        if (node->IsLeaf) {
+            for (i = index; i < node->keynum; ++i)
+                node->key[i] = node->key[i + 1];
+
+            node->key[node->keynum - 1] = 0;
+            --node->keynum;
+
+            if (node->keynum == 0) {
+                assert(node == *tree);
+                free(node);
+                *tree = NULL;
+            }
+            return;
+        }
+        /***
+        * Left child moves up!
+        */
+        else if (node->child[index]->keynum >= BTree_Degree) {
+            LeftChild = node->child[index];
+            LeftKey = LeftChild->key[node->keynum - 1];
+            node->key[index] = key;
+            BTreeRecursiveRemove(&LeftChild, key);
+        }
+        /**
+        * Right child moves up!
+        */
+        else if (node->child[index + 1]->keynum >= BTree_Degree) {
+            RightChild = node->child[index + 1];
+            RightKey = RightChild->key[0];
+            node->key[index] = key;
+            BTreeRecursiveRemove(&RightChild, key);
+        } else if (node->child[index]->keynum == BTree_Degree - 1
+                   && node->child[index + 1]->keynum == BTree_Degree - 1) {
+            LeftChild = node->child[index];
+            BTreeMergeChild(tree, node, index);
+            BTreeRecursiveRemove(&LeftChild, key);
+        }
+    }
+    else
+    {
+        BTNode * LeftSiBling,* RightSiBling, *child;
+
+        child=node->child[index];
+        if (!child) {
+            printf("Failed to remove %c, it is not in the tree!\n", key);
+            return;
+        }
+
+        if(child->keynum==BTree_Degree-1) {
+            LeftSiBling = NULL;
+            RightSiBling = NULL;
+
+            if (index - 1 >= 0) {
+                LeftSiBling = node->child[index - 1];
+            }
+
+            if (index - 1 <= node->keynum)
+                RightSiBling = node->child[index + 1];
+
+            if ((LeftSiBling && LeftSiBling->keynum >= BTree_Degree) ||
+                (RightSiBling && RightSiBling->keynum >= BTree_Degree)) {
+
+                int richR = 0;
+                if (RightSiBling) richR = 1;
+                if (RightSiBling && LeftSiBling)
+                    richR = cmp(RightSiBling->keynum, LeftSiBling->keynum);
+
+                if (RightSiBling && RightSiBling->keynum >= BTree_Degree && richR) {
+                    child->key[child->keynum] = node->key[index];
+                    child->child[child->keynum + 1] = RightSiBling->child[0];
+                    ++child->keynum;
+
+                    node->key[index] = RightSiBling->key[0];
+
+                    for (j = 0; j < RightSiBling->keynum - 1; ++j) {
+                        RightSiBling->key[j] = RightSiBling->key[j + 1];
+                        RightSiBling->child[j] = RightSiBling->child[j + 1];
+                    }
+
+                    RightSiBling->key[RightSiBling->keynum - 1] = 0;
+                    RightSiBling->child[RightSiBling->keynum - 1] = RightSiBling->child[RightSiBling->keynum];
+                    RightSiBling->child[RightSiBling->keynum] = NULL;
+                    --RightSiBling->keynum;
+
+                } else {
+                    for (j = child->keynum; j > 0; --j) {//元素后移
+                        child->key[j] = child->key[j - 1];
+                        child->child[j + 1] = child->child[j];
+                    }
+                    child->child[1] = child->child[0];
+                    child->child[0] = LeftSiBling->child[LeftSiBling->keynum];
+                    child->key[0] = node->key[index - 1];
+                    ++child->keynum;
+
+                    node->key[index - 1] = LeftSiBling->key[LeftSiBling->keynum - 1];
+
+                    LeftSiBling->key[LeftSiBling->keynum - 1] = 0;
+                    LeftSiBling->child[LeftSiBling->keynum] = NULL;
+
+                    --LeftSiBling->keynum;
+                }
+            } else if ((!LeftSiBling || (LeftSiBling && LeftSiBling->keynum == BTree_Degree - 1))
+                       && (!RightSiBling || (RightSiBling && RightSiBling->keynum == BTree_Degree - 1))) {
+                if (LeftSiBling && LeftSiBling->keynum == BTree_Degree - 1) {
+                    BTreeMergeChild(tree, node, index - 1);
+                    child = LeftSiBling;
+                } else if (RightSiBling && RightSiBling->keynum == BTree_Degree - 1) {
+                    BTreeMergeChild(tree, node, index);
+                }
+            }
+        }
+            BTreeRecursiveRemove(&child,key);//Delete recursively
+        }
 }
 
 
