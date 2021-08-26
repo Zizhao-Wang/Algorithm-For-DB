@@ -451,7 +451,7 @@ BTNode * BTreeRecursiveSearch(const BTree tree, KeyType key,int * pos)
         ++i;
     }
 
-    if(i<tree<tree->keynum && tree->key[i]==key)
+    if(i<tree->keynum && tree->key[i]==key)
     {
         *pos=i;
         return tree;

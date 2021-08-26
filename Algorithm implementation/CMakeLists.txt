@@ -3,4 +3,4 @@ project(Algorithm_implementation)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Algorithm_implementation main.cpp AVLTree.h BTree.h BTree.c)
+add_executable(Algorithm_implementation main.cpp AVLTree.h BTree.h BTree.c KMP.h)
